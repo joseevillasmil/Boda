@@ -1,0 +1,218 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var Sillas = ViewBag.Sillas;
+    int cantidad = ViewBag.InvitadoExiste ? ViewBag.Invitado.Asientos : 0;
+    @using System.Web;
+}
+<section class="comming-soon-content section-padding" style="padding-top: 15px">
+    <div class="container">
+
+        @if (ViewBag.InvitadoExiste)
+        {
+        <h1>Jose y Yohelis</h1>
+        <h3>Nos complace en invitarlos a compartir con nosotros el día de nuestra boda, queremos que estes con nosotros en este día tan especial.</h3>
+        <h4>Viernes 19 de Noviembre de 7pm a 12pm en Lira 196, Santiago Centro, salon de eventos.</h4>
+        
+        <h3>Es importante que confirmes tu asistencia, para confirmarla por favor seleccione sus asientos.</h3>
+        <div class="row" style="margin-top:75px !important">
+            <div class="col-xs-4 text-left">
+                @if (String.Equals(ViewBag.Invitado.Estado, "PENDIENTE"))
+                    {
+                <p> Asientos <b><span id="_seleccionados">0</span> / @cantidad</b></p>
+                    }
+                <p><i class="fa fa-circle DISPONIBLE_TEXTO"></i> DISPONIBLE  </p>
+                <p><i class="fa fa-circle RESERVADO_TEXTO"></i> NO DISPONIBLE </p>
+                <p><i class="fa fa-circle SELECCIONADO_TEXTO"></i> SELECCIONADO  </p>
+                @if (String.Equals(ViewBag.Invitado.Estado, "PENDIENTE"))
+                    {
+                <button class="btn btn-success" id="btnConfirmar" onclick="confirmar()"> <i class="fa fa-check"></i> Confirmar</button>
+                    }
+
+            </div>
+
+            <div class="col-xs-8">
+                <table>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <div class="silla" id="silla-0" data-index="0" title="@Sillas[0].ReservadoPor" >
+                                @Sillas[0].RowKey
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+
+                    @for (int i = 1; i < 11; i++)
+                        {
+                    <tr>
+                        <td>
+                            <div id="silla-@i" data-index="@i" class="silla" title="@Sillas[@i].ReservadoPor">
+                                @Sillas[i].RowKey
+                            </div>
+                        </td>
+                        @if (i == 1)
+                                {
+                        <td rowspan="10">
+                            <div class="mesa" style="height:550px !important; width:70px !important"></div>
+                        </td>
+                                }
+
+                        <td>
+                            <div id="silla-@(i + 10)" data-index="@(i + 10)" class="silla" title="@Sillas[(i + 10)].ReservadoPor">
+                                @Sillas[i + 10].RowKey
+                            </div>
+                        </td>
+                    </tr>
+                        }
+
+                    <tr>
+                        <td></td>
+                        <td>
+                            <div class="silla" id="silla-21" data-index="21" style="margin-top:5px" title="@Sillas[21].ReservadoPor">
+                                @Sillas[21].RowKey
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        }
+        else
+        {
+        <h3>Invitación no válida</h3>
+        }
+
+    </div> <!-- end of container -->
+</section> <!-- end of blog-content -->
+
+<footer>
+    <div class="row">
+        <div class="container-fluid">
+            <h2>Jose &amp; Yohe</h2>
+            <h3>No olvides tu pase de movilidad y documento de identidad</h3>
+            <h3>Por encima de todo, vestios de AMOR, que es el vínculo perfecto <br /> Colosenses 3:14</h3>
+        </div>        
+    </div>
+    <div class="row">
+        <div class="container">
+            <div class="col col-sm-6">
+                <p>Joseevillasmil@hotmail.es</p>
+            </div>
+
+        </div>
+    </div>
+</footer>
+
+@section Scripts {
+    @if (ViewBag.InvitadoExiste)
+    {
+<script>
+        var sillas = JSON.parse('@Json.Serialize(ViewBag.Sillas)');
+        var seleccionados = 0;
+        var cantidad = @cantidad;
+        var listo = false;
+
+        $(".silla").on('click', function (event) {
+
+            if ('@(ViewBag.InvitadoExiste ? ViewBag.Invitado.Estado : "" )' == 'CONFIRMADO' || listo) {
+                return;
+            }
+            var index = $(this).data('index');
+            if (sillas[index].estado == 'DISPONIBLE') {
+
+                if (seleccionados >= cantidad) {
+                    return;
+                }
+
+                console.log("seleccionamos");
+                sillas[index].estado = 'SELECCIONADO';
+                seleccionados++;
+
+            } else if (sillas[index].estado == 'SELECCIONADO') {
+                console.log("des seleccionamos");
+                sillas[index].estado = 'DISPONIBLE';
+                seleccionados--;
+            }
+            $("#_seleccionados").text(seleccionados);
+            recorrer();
+        });
+
+        function recorrer() {
+            for (let i = 0; i < sillas.length; i++) {
+                $("#silla-" + i).removeClass("RESERVADO");
+                $("#silla-" + i).removeClass("DISPONIBLE");
+                $("#silla-" + i).removeClass("SELECCIONADO");
+                if (sillas[i].reservadoPor == '@ViewBag.Invitado.RowKey') {
+                    $("#silla-" + i).addClass("SELECCIONADO");
+                } else {
+                    $("#silla-" + i).addClass(sillas[i].estado);
+                }
+
+            }
+
+            if (seleccionados == cantidad) {
+                $("#btnConfirmar").prop('disabled', false);
+            } else {
+                $("#btnConfirmar").prop('disabled', true);
+            }
+        }
+
+        function confirmar() {
+
+            swal({
+                title: "Confirmación",
+                text: "¿Está seguro de confirmar su asistencia?",
+                icon: "info",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((confirmacion) => {
+                    if (confirmacion) {
+                       // se confirma!
+                        // buscamos los que hay que enivar.
+                        let asientos = '';
+                        for (var i = 0; i < sillas.length; i++) {
+                            if (sillas[i].estado == 'SELECCIONADO') {
+                                asientos += sillas[i].rowKey + "|";
+                            }
+                        }
+
+                        fetch('/Home/Confirmar', {
+                            method: 'POST',
+                            mode: 'cors',
+                            cache: 'no-cache',
+                            credentials: 'same-origin', // include, *same-origin, omit
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                RowKey: '@ViewBag.Invitado.RowKey',
+                                Asientos: asientos
+                                })
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    listo = true;
+                                    swal("Confirmación Exitosa!");
+                                    window.location.reload();
+                                } else {
+                                    swal("Ha ocurrido un error, es posible que los asientos ya no estén disponibles, por favor recargue la página e intentelo de nuevo.");
+                                }
+                            }).catch(() => {
+                                swal("Ha ocurrido un error, es posible que los asientos ya no estén disponibles, por favor recargue la página e intentelo de nuevo.");
+                            })
+                    } else {
+
+                    }
+                });
+        }
+        recorrer();
+
+        //
+</script>
+    }
+
+}

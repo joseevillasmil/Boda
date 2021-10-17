@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "dgSpecHash": "v1Eq+/5ru5W/0UIn5a28kuE1kKR43IkCV8VjBmxkLtWS406P09rJYzEtloNAB5OGpPerd/uYKQ+qRzERCO9YJg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Josee\\source\\repos\\Joseevillasmil.Boda\\Joseevillasmil.Boda\\Joseevillasmil.Boda.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Josee\\.nuget\\packages\\azure.core\\1.20.0\\azure.core.1.20.0.nupkg.sha512",
+    "C:\\Users\\Josee\\.nuget\\packages\\azure.data.tables\\12.2.1\\azure.data.tables.12.2.1.nupkg.sha512",
+    "C:\\Users\\Josee\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.0.0\\microsoft.bcl.asyncinterfaces.1.0.0.nupkg.sha512",
+    "C:\\Users\\Josee\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.6.0\\system.diagnostics.diagnosticsource.4.6.0.nupkg.sha512",
+    "C:\\Users\\Josee\\.nuget\\packages\\system.memory.data\\1.0.2\\system.memory.data.1.0.2.nupkg.sha512",
+    "C:\\Users\\Josee\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
+    "C:\\Users\\Josee\\.nuget\\packages\\system.text.encodings.web\\4.7.2\\system.text.encodings.web.4.7.2.nupkg.sha512",
+    "C:\\Users\\Josee\\.nuget\\packages\\system.text.json\\4.6.0\\system.text.json.4.6.0.nupkg.sha512",
+    "C:\\Users\\Josee\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512"
+  ],
+  "logs": []
+}

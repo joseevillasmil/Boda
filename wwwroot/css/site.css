@@ -1,0 +1,46 @@
+﻿.silla {
+    height: 50px;
+    width: 50px;
+    border: 1px solid #000;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.circulo {
+    height: 5px;
+    width: 5px;
+    border-radius: 3px;
+}
+
+.mesa {
+    border: 1px solid #000;
+    height: 100% !important;
+    cursor: pointer;
+}
+
+.SELECCIONADO {
+    background: #e6df56;
+}
+
+.RESERVADO {
+    background: #e94b35;
+}
+
+.DISPONIBLE {
+    background: #91efb9;
+}
+
+.SELECCIONADO_TEXTO {
+    color: #e6df56;
+}
+
+.RESERVADO_TEXTO {
+    color: #e94b35;
+}
+
+.DISPONIBLE_TEXTO {
+    color: #91efb9;
+}

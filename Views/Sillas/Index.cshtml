@@ -1,0 +1,123 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var Sillas = ViewBag.Sillas;
+    int cantidad = 3;
+}
+<section class="comming-soon-content section-padding">
+    <div class="container">
+        <h1>Jose y Yohelis</h1>
+        <h2>Confirma tu asistencia</h2>
+        <div class="row">
+            <div class="col-xs-4">
+                <p>Para confirmar asistencia por favor seleccione sus asientos </p>
+                <p> Asientos seleccionados <b><span id="_seleccionados">0</span> / @cantidad</b></p>
+                <p><i class="fa fa-circle DISPONIBLE_TEXTO"></i> DISPONIBLE  </p>
+                <p><i class="fa fa-circle RESERVADO_TEXTO"></i> NO DISPONIBLE </p>
+                <p><i class="fa fa-circle SELECCIONADO_TEXTO"></i> SELECCIONADO  </p>
+            </div>
+
+            <div class="col-xs-8">
+                <table>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <div class="silla" id="silla-0" data-index="0">
+                                @Sillas[0].RowKey
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+
+                    @for (int i = 1; i < 11; i++)
+                    {
+                        <tr>
+                            <td>
+                                <div id="silla-@i" data-index="@i" class="silla">
+                                    @Sillas[i].RowKey
+                                </div>
+                            </td>
+                            @if (i == 1)
+                            {
+                                <td rowspan="10">
+                                    <div class="mesa" style="height:550px !important; width:70px !important"></div>
+                                </td>
+                            }
+
+                            <td>
+                                <div id="silla-@(i + 10)" data-index="@(i + 10)" class="silla">
+                                    @Sillas[i + 10].RowKey
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+                    <tr>
+                        <td></td>
+                        <td>
+                            <div class="silla" id="silla-21" data-index="21">
+                                @Sillas[21].RowKey
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div> <!-- end of container -->
+</section> <!-- end of blog-content -->
+
+<footer>
+    <div class="row">
+        <h2>Jose &amp; Yohe</h2>
+        <span class="date">19 Noviembre 2021 </span>
+    </div>
+</footer> <!-- end of footer -->
+@section Scripts {
+    <script>
+        var sillas = JSON.parse('@Json.Serialize(ViewBag.Sillas)');
+        var seleccionados = 0;
+        var cantidad = @cantidad;
+        $(".silla").on('click', function (event) {
+
+            var index = $(this).data('index');
+            if (sillas[index].estado == 'DISPONIBLE') {
+
+                if (seleccionados >= cantidad) {
+                    return;
+                }
+
+                console.log("seleccionamos");
+                sillas[index].estado = 'SELECCIONADO';
+                seleccionados++;
+                $("#_seleccionados").text(seleccionados);
+            } else if (sillas[index].estado == 'SELECCIONADO') {
+                console.log("des seleccionamos");
+                sillas[index].estado = 'DISPONIBLE';
+                seleccionados--;
+            }
+
+            recorrer();
+        });
+
+        function recorrer() {
+            for (let i = 0; i < sillas.length; i++) {
+                $("#silla-" + i).removeClass("RESERVADO");
+                $("#silla-" + i).removeClass("DISPONIBLE");
+                $("#silla-" + i).removeClass("SELECCIONADO");
+                $("#silla-" + i).addClass(sillas[i].estado);
+            }
+
+            if (seleccionados == cantidad) {
+                $("#btnConfirmar").prop('disabled', false);
+            } else {
+                $("#btnConfirmar").prop('disabled', true);
+            }
+        }
+
+        recorrer();
+
+        //
+    </script>
+}
